@@ -49,10 +49,21 @@ const updateContact = async (req, res, next) => {
   return res.status(200).json(contact);
 };
 
+const updateStatusContact = async (req, res, next) => {
+  const { contactId } = req.params;
+  const contact = await updateContactById(contactId, req.body);
+
+  if (!contact) {
+    throw new WrongParametersError(`Not found contact by id: ${contactId}`);
+  }
+  return res.status(200).json(contact);
+};
+
 module.exports = {
   getContacts,
   getContact,
   createContact,
   deleteContact,
   updateContact,
+  updateStatusContact,
 };
