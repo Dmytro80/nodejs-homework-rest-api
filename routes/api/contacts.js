@@ -7,7 +7,7 @@ const {
   deleteContact,
   updateContact,
 } = require("../../controllers/contacts.controllers");
-const { contactSchema } = require("../../schemas/contacts");
+const { contactSchema } = require("../../models/contact");
 const { validateBody } = require("../../middlewares/index");
 const router = express.Router();
 
