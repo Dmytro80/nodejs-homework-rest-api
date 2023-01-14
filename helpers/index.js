@@ -1,9 +1,16 @@
-const createError = (status, message) => {
-  const error = new Error();
-  error.status = status;
-  error.message = message;
-  return error;
-};
+class ValidationError extends Error {
+  constructor(message) {
+    super(message);
+    this.status = 400;
+  }
+}
+
+class WrongParametersError extends Error {
+  constructor(message) {
+    super(message);
+    this.status = 404;
+  }
+}
 
 const tryCatchWrapper = (endpointFn) => {
   return async (req, res, next) => {
@@ -15,4 +22,4 @@ const tryCatchWrapper = (endpointFn) => {
   };
 };
 
-module.exports = { createError, tryCatchWrapper };
+module.exports = { ValidationError, WrongParametersError, tryCatchWrapper };

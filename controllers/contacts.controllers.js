@@ -5,7 +5,7 @@ const {
   removeContact,
   updateContactById,
 } = require("../models/contacts");
-const { createError } = require("../helpers/index");
+const { WrongParametersError } = require("../helpers/index");
 
 const getContacts = async (req, res) => {
   const contacts = await listContacts();
@@ -18,7 +18,7 @@ const getContact = async (req, res, next) => {
   const contact = await getContactById(contactId);
 
   if (!contact) {
-    return next(createError(404, "Not found"));
+    throw new WrongParametersError("Not found");
   }
   return res.json(contact);
 };
@@ -33,7 +33,7 @@ const deleteContact = async (req, res, next) => {
   const contact = await getContactById(contactId);
 
   if (!contact) {
-    return next(createError(404, "Not found"));
+    throw new WrongParametersError("Not found");
   }
   await removeContact(contactId);
   return res.status(200).json({ message: "contact deleted" });
@@ -44,7 +44,7 @@ const updateContact = async (req, res, next) => {
   const contact = await updateContactById(contactId, req.body);
 
   if (!contact) {
-    return next(createError(404, "Not found"));
+    throw new WrongParametersError("Not found");
   }
   return res.status(200).json(contact);
 };
