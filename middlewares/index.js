@@ -1,10 +1,10 @@
-const { ValidationError } = require("../helpers/index");
+const { HttpError } = require("../helpers/index");
 
 const validateBody = (schema) => {
   return (req, res, next) => {
     const { error } = schema.validate(req.body);
     if (error) {
-      next(new ValidationError(error.message));
+      next(new HttpError(400, error.message));
     }
 
     return next();

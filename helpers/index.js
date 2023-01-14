@@ -1,14 +1,7 @@
-class ValidationError extends Error {
-  constructor(message) {
+class HttpError extends Error {
+  constructor(status, message) {
     super(message);
-    this.status = 400;
-  }
-}
-
-class WrongParametersError extends Error {
-  constructor(message) {
-    super(message);
-    this.status = 404;
+    this.status = status;
   }
 }
 
@@ -22,4 +15,7 @@ const tryCatchWrapper = (endpointFn) => {
   };
 };
 
-module.exports = { ValidationError, WrongParametersError, tryCatchWrapper };
+module.exports = {
+  HttpError,
+  tryCatchWrapper,
+};
