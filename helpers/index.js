@@ -1,9 +1,9 @@
-const createError = (status, message) => {
-  const error = new Error();
-  error.status = status;
-  error.message = message;
-  return error;
-};
+class HttpError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+  }
+}
 
 const tryCatchWrapper = (endpointFn) => {
   return async (req, res, next) => {
@@ -15,4 +15,7 @@ const tryCatchWrapper = (endpointFn) => {
   };
 };
 
-module.exports = { createError, tryCatchWrapper };
+module.exports = {
+  HttpError,
+  tryCatchWrapper,
+};
