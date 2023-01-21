@@ -9,6 +9,7 @@ const {
 const { validateBody } = require("../../middlewares/index");
 const { schemaRegister, schemaLogin } = require("../../schemas/users");
 const { tryCatchWrapper } = require("../../helpers/index");
+const { auth } = require("../../middlewares/index");
 
 router.post(
   "/signup",
@@ -18,6 +19,6 @@ router.post(
 
 router.post("/login", validateBody(schemaLogin), tryCatchWrapper(signinUser));
 
-router.get("/logout", tryCatchWrapper(logoutUser));
+router.get("/logout", tryCatchWrapper(auth), tryCatchWrapper(logoutUser));
 
 module.exports = router;
