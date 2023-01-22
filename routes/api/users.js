@@ -6,7 +6,7 @@ const {
   signinUser,
   logoutUser,
   getCurrentUser,
-} = require("../../controllers/auth");
+} = require("../../controllers/users");
 const { validateBody } = require("../../middlewares/index");
 const { schemaRegister, schemaLogin } = require("../../schemas/users");
 const { tryCatchWrapper } = require("../../helpers/index");

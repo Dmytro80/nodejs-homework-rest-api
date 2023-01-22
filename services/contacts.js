@@ -1,13 +1,20 @@
 const { Contact } = require("../models/contact");
 
-const listContacts = async (query) => {
-  const { limit = 3, page = 1 } = query;
+const listContacts = async (user, query) => {
+  const { limit = 3, page = 1, favorite } = query;
   const skip = (page - 1) * limit;
 
-  const contacts = await Contact.find({})
+  if (favorite) {
+    const contacts = await Contact.find({ owner: user._id, favorite })
+      .skip(skip)
+      .limit(limit);
+
+    return contacts;
+  }
+
+  const contacts = await Contact.find({ owner: user._id })
     .skip(skip)
-    .limit(limit)
-    .populate("owner");
+    .limit(limit);
 
   return contacts;
 };

@@ -1,4 +1,4 @@
-const { createUser, loginUser, logout } = require("../services/auth");
+const { createUser, loginUser, logout } = require("../services/users");
 
 const signupUser = async (req, res, next) => {
   const { email, subscription } = await createUser(req.body);
