@@ -5,6 +5,7 @@ const {
   signupUser,
   signinUser,
   logoutUser,
+  getCurrentUser,
 } = require("../../controllers/auth");
 const { validateBody } = require("../../middlewares/index");
 const { schemaRegister, schemaLogin } = require("../../schemas/users");
@@ -20,5 +21,7 @@ router.post(
 router.post("/login", validateBody(schemaLogin), tryCatchWrapper(signinUser));
 
 router.get("/logout", tryCatchWrapper(auth), tryCatchWrapper(logoutUser));
+
+router.get("/current", tryCatchWrapper(auth), tryCatchWrapper(getCurrentUser));
 
 module.exports = router;

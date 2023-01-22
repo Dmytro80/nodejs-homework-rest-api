@@ -23,4 +23,10 @@ const logoutUser = async (req, res, next) => {
   res.sendStatus(204);
 };
 
-module.exports = { signupUser, signinUser, logoutUser };
+const getCurrentUser = async (req, res, next) => {
+  const { user } = req;
+
+  res.json({ email: user.email, subscription: user.subscription });
+};
+
+module.exports = { signupUser, signinUser, logoutUser, getCurrentUser };

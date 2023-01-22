@@ -20,6 +20,7 @@ const schema = new Schema(
       type: String,
       default: null,
     },
+    contacts: [{ type: Schema.Types.ObjectId, ref: "contact" }],
   },
   {
     versionKey: false,

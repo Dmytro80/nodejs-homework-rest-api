@@ -1,7 +1,13 @@
 const { Contact } = require("../models/contact");
 
-const listContacts = async () => {
-  const contacts = await Contact.find({});
+const listContacts = async (query) => {
+  const { limit = 3, page = 1 } = query;
+  const skip = (page - 1) * limit;
+
+  const contacts = await Contact.find({})
+    .skip(skip)
+    .limit(limit)
+    .populate("owner");
 
   return contacts;
 };
@@ -16,8 +22,8 @@ const removeContact = async (contactId) => {
   await Contact.findByIdAndRemove(contactId);
 };
 
-const addContact = async (body) => {
-  const newContact = await Contact.create(body);
+const addContact = async (body, id) => {
+  const newContact = await Contact.create({ ...body, owner: id });
 
   return newContact;
 };
