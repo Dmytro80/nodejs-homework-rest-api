@@ -50,4 +50,8 @@ const logout = async (id) => {
   await User.findByIdAndUpdate(id, { token: null });
 };
 
-module.exports = { createUser, loginUser, logout };
+const updateUser = async (id, data) => {
+  return User.findByIdAndUpdate(id, data, { new: true });
+};
+
+module.exports = { createUser, loginUser, logout, updateUser };

@@ -24,4 +24,14 @@ const schemaLogin = Joi.object({
   }),
 });
 
-module.exports = { schemaRegister, schemaLogin };
+const schemaUpdate = Joi.object({
+  subscription: Joi.string()
+    .valid("starter", "pro", "business")
+    .required()
+    .messages({
+      "any.valid": "This subscription is not valid",
+      "any.required": "Subscription is required",
+    }),
+});
+
+module.exports = { schemaRegister, schemaLogin, schemaUpdate };

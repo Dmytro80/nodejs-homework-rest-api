@@ -6,9 +6,14 @@ const {
   signinUser,
   logoutUser,
   getCurrentUser,
+  updateSubscription,
 } = require("../../controllers/users");
 const { validateBody } = require("../../middlewares/index");
-const { schemaRegister, schemaLogin } = require("../../schemas/users");
+const {
+  schemaRegister,
+  schemaLogin,
+  schemaUpdate,
+} = require("../../schemas/users");
 const { tryCatchWrapper } = require("../../helpers/index");
 const { auth } = require("../../middlewares/index");
 
@@ -23,5 +28,12 @@ router.post("/login", validateBody(schemaLogin), tryCatchWrapper(signinUser));
 router.get("/logout", tryCatchWrapper(auth), tryCatchWrapper(logoutUser));
 
 router.get("/current", tryCatchWrapper(auth), tryCatchWrapper(getCurrentUser));
+
+router.patch(
+  "/",
+  tryCatchWrapper(auth),
+  validateBody(schemaUpdate),
+  tryCatchWrapper(updateSubscription)
+);
 
 module.exports = router;
