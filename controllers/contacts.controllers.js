@@ -8,8 +8,8 @@ const {
 const { HttpError } = require("../helpers/index");
 
 const getContacts = async (req, res) => {
-  const contacts = await listContacts();
-  res.json(contacts);
+  const contacts = await listContacts(req.user, req.query);
+  return res.json(contacts);
 };
 
 const getContact = async (req, res, next) => {
@@ -24,8 +24,9 @@ const getContact = async (req, res, next) => {
 };
 
 const createContact = async (req, res, next) => {
-  const newContact = await addContact(req.body);
-  res.status(201).json(newContact);
+  const { _id } = req.user;
+  const newContact = await addContact(req.body, _id);
+  return res.status(201).json(newContact);
 };
 
 const deleteContact = async (req, res, next) => {
