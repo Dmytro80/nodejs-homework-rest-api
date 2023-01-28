@@ -3,6 +3,7 @@ const { HttpError } = require("../helpers/index");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const gravatar = require("gravatar");
 
 const { SECRET_KEY } = process.env;
 
@@ -10,7 +11,6 @@ const createUser = async (userData) => {
   const { email, password } = userData;
 
   const user = await User.findOne({ email });
-  console.log("user", user);
 
   if (user) {
     throw new HttpError(409, "Email in use");
@@ -19,7 +19,15 @@ const createUser = async (userData) => {
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  return User.create({ ...userData, password: hashedPassword });
+  const avatarURL = gravatar.url(email, { s: "250" }, false);
+
+  const newUser = await User.create({
+    ...userData,
+    password: hashedPassword,
+    avatarURL,
+  });
+
+  return newUser;
 };
 
 const loginUser = async ({ email, password }) => {

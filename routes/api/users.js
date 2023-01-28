@@ -7,8 +7,9 @@ const {
   logoutUser,
   getCurrentUser,
   updateSubscription,
+  updateAvatar,
 } = require("../../controllers/users");
-const { validateBody } = require("../../middlewares");
+const { validateBody, upload } = require("../../middlewares");
 const {
   schemaRegister,
   schemaLogin,
@@ -34,6 +35,13 @@ router.patch(
   tryCatchWrapper(auth),
   validateBody(schemaUpdate),
   tryCatchWrapper(updateSubscription)
+);
+
+router.patch(
+  "/avatars",
+  tryCatchWrapper(auth),
+  upload.single("avatar"),
+  tryCatchWrapper(updateAvatar)
 );
 
 module.exports = router;
