@@ -1,5 +1,6 @@
 const fs = require("fs/promises");
 const path = require("path");
+const Jimp = require("jimp");
 
 const {
   createUser,
@@ -60,6 +61,10 @@ const updateAvatar = async (req, res, next) => {
   try {
     const { path: tempPath, filename } = req.file;
     const { _id } = req.user;
+
+    const image = await Jimp.read(tempPath);
+    await image.autocrop().cover(250, 250).writeAsync(tempPath);
+
     const [extension] = filename.split(".").reverse();
     const avatarName = `${_id}.${extension}`;
     const fullAvatarPath = path.join(avatarsPath, avatarName);

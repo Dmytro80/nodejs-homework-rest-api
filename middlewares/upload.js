@@ -12,6 +12,15 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.includes("image")) {
+      cb(null, true);
+      return;
+    }
+    cb(null, false);
+  },
+});
 
 module.exports = upload;
