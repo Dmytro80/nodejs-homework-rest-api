@@ -9,8 +9,8 @@ const {
   updateStatusContact,
 } = require("../../controllers/contacts.controllers");
 const { contactSchema, updateStatusSchema } = require("../../schemas/contacts");
-const { validateBody } = require("../../middlewares/index");
-const { auth } = require("../../middlewares/index");
+const { validateBody } = require("../../middlewares");
+const { auth } = require("../../middlewares");
 
 const router = express.Router();
 
@@ -20,8 +20,8 @@ router.get("/:contactId", tryCatchWrapper(auth), tryCatchWrapper(getContact));
 
 router.post(
   "/",
-  validateBody(contactSchema),
   tryCatchWrapper(auth),
+  validateBody(contactSchema),
   tryCatchWrapper(createContact)
 );
 

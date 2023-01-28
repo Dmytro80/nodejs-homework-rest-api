@@ -8,14 +8,14 @@ const {
   getCurrentUser,
   updateSubscription,
 } = require("../../controllers/users");
-const { validateBody } = require("../../middlewares/index");
+const { validateBody } = require("../../middlewares");
 const {
   schemaRegister,
   schemaLogin,
   schemaUpdate,
 } = require("../../schemas/users");
 const { tryCatchWrapper } = require("../../helpers/index");
-const { auth } = require("../../middlewares/index");
+const { auth } = require("../../middlewares");
 
 router.post(
   "/signup",
