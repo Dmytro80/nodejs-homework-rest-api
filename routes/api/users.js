@@ -7,15 +7,16 @@ const {
   logoutUser,
   getCurrentUser,
   updateSubscription,
+  updateAvatar,
 } = require("../../controllers/users");
-const { validateBody } = require("../../middlewares/index");
+const { validateBody, upload } = require("../../middlewares");
 const {
   schemaRegister,
   schemaLogin,
   schemaUpdate,
 } = require("../../schemas/users");
 const { tryCatchWrapper } = require("../../helpers/index");
-const { auth } = require("../../middlewares/index");
+const { auth } = require("../../middlewares");
 
 router.post(
   "/signup",
@@ -34,6 +35,13 @@ router.patch(
   tryCatchWrapper(auth),
   validateBody(schemaUpdate),
   tryCatchWrapper(updateSubscription)
+);
+
+router.patch(
+  "/avatars",
+  tryCatchWrapper(auth),
+  upload.single("avatar"),
+  tryCatchWrapper(updateAvatar)
 );
 
 module.exports = router;

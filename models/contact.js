@@ -11,7 +11,7 @@ const schema = new Schema(
     },
     phone: {
       type: String,
-      unique: true,
+      required: [true, "Set phone for contact"],
     },
     favorite: {
       type: Boolean,
