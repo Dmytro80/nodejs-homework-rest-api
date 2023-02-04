@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
 
-const { SECRET_KEY } = process.env;
+const { SECRET_KEY, SENDGRID_EMAIL_FROM } = process.env;
 
 const createUser = async (userData) => {
   const { email, password } = userData;
@@ -34,6 +34,7 @@ const createUser = async (userData) => {
 
   const verificationMail = {
     to: email,
+    from: SENDGRID_EMAIL_FROM,
     subject: "Confirm your email",
     html: `<a href="http://localhost:3000/api/users/verify/${verificationToken}" target="_blank">Click to confirm your email</a>`,
   };
@@ -69,6 +70,7 @@ const sendLinkVerify = async (email) => {
 
   const verificationMail = {
     to: email,
+    from: SENDGRID_EMAIL_FROM,
     subject: "Confirm your email",
     html: `<a href="http://localhost:3000/api/users/verify/${user.verificationToken}" target="_blank">Click to confirm your email</a>`,
   };

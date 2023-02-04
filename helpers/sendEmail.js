@@ -6,12 +6,7 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 
 const sendEmail = async (data) => {
   try {
-    const email = {
-      ...data,
-      from: "vdrabota@icloud.com",
-    };
-    await sgMail.send(email);
-    return true;
+    await sgMail.send(data);
   } catch (error) {
     throw error;
   }
