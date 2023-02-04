@@ -50,8 +50,6 @@ const verifyUserEmail = async (verificationToken) => {
     throw new HttpError(404, "User not found");
   }
 
-  console.log("user", user);
-
   await User.findByIdAndUpdate(user._id, {
     verify: true,
     verificationToken: null,
@@ -63,6 +61,10 @@ const loginUser = async ({ email, password }) => {
 
   if (!user) {
     throw new HttpError(401, "Email or password is wrong");
+  }
+
+  if (user.verify === false) {
+    throw new HttpError(401, "No email verification");
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
