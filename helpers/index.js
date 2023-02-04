@@ -1,21 +1,11 @@
-class HttpError extends Error {
-  constructor(status, message) {
-    super(message);
-    this.status = status;
-  }
-}
+const sendEmail = require("./sendEmail");
 
-const tryCatchWrapper = (endpointFn) => {
-  return async (req, res, next) => {
-    try {
-      await endpointFn(req, res, next);
-    } catch (error) {
-      return next(error);
-    }
-  };
-};
+const HttpError = require("./HttpError");
+
+const tryCatchWrapper = require("./tryCatchWrapper");
 
 module.exports = {
   HttpError,
   tryCatchWrapper,
+  sendEmail,
 };

@@ -7,6 +7,8 @@ const {
   loginUser,
   logout,
   updateUser,
+  verifyUserEmail,
+  sendLinkVerify,
 } = require("../services/users");
 
 const { HttpError } = require("../helpers/index");
@@ -21,6 +23,24 @@ const signupUser = async (req, res, next) => {
       email,
       subscription,
     },
+  });
+};
+
+const verifyEmail = async (req, res, next) => {
+  const { verificationToken } = req.params;
+
+  await verifyUserEmail(verificationToken);
+
+  res.json({ message: "Verification successful" });
+};
+
+const resendLinkVerify = async (req, res, next) => {
+  const { email } = req.body;
+
+  await sendLinkVerify(email);
+
+  res.json({
+    message: "Verification email sent",
   });
 };
 
@@ -89,4 +109,6 @@ module.exports = {
   getCurrentUser,
   updateSubscription,
   updateAvatar,
+  verifyEmail,
+  resendLinkVerify,
 };
