@@ -1,5 +1,7 @@
 const { User } = require("../models/user");
-const { HttpError } = require("../helpers/index");
+const { HttpError, sendEmail } = require("../helpers/index");
+
+const { v4: uuidv4 } = require("uuid");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -21,13 +23,39 @@ const createUser = async (userData) => {
 
   const avatarURL = gravatar.url(email, { s: "250" }, false);
 
+  const verificationToken = uuidv4();
+
   const newUser = await User.create({
     ...userData,
     password: hashedPassword,
     avatarURL,
+    verificationToken,
   });
 
+  const verificationMail = {
+    to: email,
+    subject: "Confirm your email",
+    html: `<a href="http://localhost:3000/api/users/verify/${verificationToken}" target="_blank">Click to confirm your email</a>`,
+  };
+
+  await sendEmail(verificationMail);
+
   return newUser;
+};
+
+const verifyUserEmail = async (verificationToken) => {
+  const user = await User.findOne({ verificationToken });
+
+  if (!user) {
+    throw new HttpError(404, "User not found");
+  }
+
+  console.log("user", user);
+
+  await User.findByIdAndUpdate(user._id, {
+    verify: true,
+    verificationToken: null,
+  });
 };
 
 const loginUser = async ({ email, password }) => {
@@ -60,4 +88,4 @@ const updateUser = async (id, data) => {
   return User.findByIdAndUpdate(id, data, { new: true });
 };
 
-module.exports = { createUser, loginUser, logout, updateUser };
+module.exports = { createUser, loginUser, logout, updateUser, verifyUserEmail };

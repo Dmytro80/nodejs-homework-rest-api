@@ -8,6 +8,7 @@ const {
   getCurrentUser,
   updateSubscription,
   updateAvatar,
+  verifyEmail,
 } = require("../../controllers/users");
 const { validateBody, upload } = require("../../middlewares");
 const {
@@ -23,6 +24,8 @@ router.post(
   validateBody(schemaRegister),
   tryCatchWrapper(signupUser)
 );
+
+router.get("/verify/:verificationToken", tryCatchWrapper(verifyEmail));
 
 router.post("/login", validateBody(schemaLogin), tryCatchWrapper(signinUser));
 

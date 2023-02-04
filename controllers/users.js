@@ -7,6 +7,7 @@ const {
   loginUser,
   logout,
   updateUser,
+  verifyUserEmail,
 } = require("../services/users");
 
 const { HttpError } = require("../helpers/index");
@@ -22,6 +23,14 @@ const signupUser = async (req, res, next) => {
       subscription,
     },
   });
+};
+
+const verifyEmail = async (req, res, next) => {
+  const { verificationToken } = req.params;
+
+  await verifyUserEmail(verificationToken);
+
+  res.json({ message: "Verification successful" });
 };
 
 const signinUser = async (req, res, next) => {
@@ -89,4 +98,5 @@ module.exports = {
   getCurrentUser,
   updateSubscription,
   updateAvatar,
+  verifyEmail,
 };
