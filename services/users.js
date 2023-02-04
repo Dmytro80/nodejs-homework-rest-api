@@ -56,6 +56,26 @@ const verifyUserEmail = async (verificationToken) => {
   });
 };
 
+const sendLinkVerify = async (email) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new HttpError(401, "Email or password is wrong");
+  }
+
+  if (user.verify) {
+    throw new HttpError(400, "Verification has already been passed");
+  }
+
+  const verificationMail = {
+    to: email,
+    subject: "Confirm your email",
+    html: `<a href="http://localhost:3000/api/users/verify/${user.verificationToken}" target="_blank">Click to confirm your email</a>`,
+  };
+
+  await sendEmail(verificationMail);
+};
+
 const loginUser = async ({ email, password }) => {
   const user = await User.findOne({ email });
 
@@ -63,14 +83,14 @@ const loginUser = async ({ email, password }) => {
     throw new HttpError(401, "Email or password is wrong");
   }
 
-  if (user.verify === false) {
-    throw new HttpError(401, "No email verification");
-  }
-
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
     throw new HttpError(401, "Email or password is wrong");
+  }
+
+  if (!user.verify) {
+    throw new HttpError(401, "No email verification");
   }
 
   const payload = { id: user._id };
@@ -90,4 +110,11 @@ const updateUser = async (id, data) => {
   return User.findByIdAndUpdate(id, data, { new: true });
 };
 
-module.exports = { createUser, loginUser, logout, updateUser, verifyUserEmail };
+module.exports = {
+  createUser,
+  loginUser,
+  logout,
+  updateUser,
+  verifyUserEmail,
+  sendLinkVerify,
+};

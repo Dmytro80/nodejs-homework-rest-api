@@ -9,12 +9,14 @@ const {
   updateSubscription,
   updateAvatar,
   verifyEmail,
+  resendLinkVerify,
 } = require("../../controllers/users");
 const { validateBody, upload } = require("../../middlewares");
 const {
   schemaRegister,
   schemaLogin,
   schemaUpdate,
+  schemaVerifyEmail,
 } = require("../../schemas/users");
 const { tryCatchWrapper } = require("../../helpers/index");
 const { auth } = require("../../middlewares");
@@ -26,6 +28,12 @@ router.post(
 );
 
 router.get("/verify/:verificationToken", tryCatchWrapper(verifyEmail));
+
+router.post(
+  "/verify",
+  validateBody(schemaVerifyEmail),
+  tryCatchWrapper(resendLinkVerify)
+);
 
 router.post("/login", validateBody(schemaLogin), tryCatchWrapper(signinUser));
 

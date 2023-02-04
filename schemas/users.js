@@ -34,4 +34,15 @@ const schemaUpdate = Joi.object({
     }),
 });
 
-module.exports = { schemaRegister, schemaLogin, schemaUpdate };
+const schemaVerifyEmail = Joi.object({
+  email: Joi.string().email().required().messages({
+    "any.required": "Missing required field email",
+  }),
+});
+
+module.exports = {
+  schemaRegister,
+  schemaLogin,
+  schemaUpdate,
+  schemaVerifyEmail,
+};
