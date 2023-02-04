@@ -1,3 +1,17 @@
+const nodemailer = require("nodemailer");
+
+const { META_PASSWORD } = process.env;
+console.log("META_PASSWORD", META_PASSWORD);
+
+const nodemailerConfig = {
+  host: "smtp.meta.ua",
+  port: 465,
+  secure: true,
+  auth: { user: "d.voronievskyi@meta.ua", pass: META_PASSWORD },
+};
+
+const transporter = nodemailer.createTransport(nodemailerConfig);
+
 class HttpError extends Error {
   constructor(status, message) {
     super(message);
@@ -18,4 +32,5 @@ const tryCatchWrapper = (endpointFn) => {
 module.exports = {
   HttpError,
   tryCatchWrapper,
+  transporter,
 };
